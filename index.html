@@ -1,85 +1,136 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>澎湖每日生鮮與健康指南</title>
+  <style>
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #121212; color: #ffffff; margin: 0; padding: 16px; }
+    .container { max-width: 480px; margin: 0 auto; }
+    h1 { font-size: 20px; text-align: center; margin-bottom: 16px; color: #64B5F6; }
+    
+    .filter-box { background: #1e1e1e; padding: 12px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #333; }
+    .filter-title { font-size: 14px; color: #aaa; margin-bottom: 8px; }
+    .filter-options label { font-size: 13px; margin-right: 12px; cursor: pointer; color: #ffb74d; }
 
-    <title>澎湖智慧飲食</title>
+    .card { background: #1e1e1e; border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid #2a2a2a; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .card-title { font-size: 18px; font-weight: bold; margin: 0; }
+    .badge-season { background: #2e7d32; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; }
+    .badge-today { background: #d32f2f; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; }
+    
+    .price-info { background: #262626; padding: 8px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 12px; }
+    .price-down { color: #81c784; font-weight: bold; }
 
-    <link rel="stylesheet" href="style.css">
+    .warning-box { background: #3e2723; border-left: 4px solid #ff5722; padding: 8px; font-size: 12px; color: #ffcc80; margin-bottom: 12px; display: none; }
+    
+    .section-title { font-size: 13px; color: #4fc3f7; font-weight: bold; margin-top: 8px; }
+    .content-text { font-size: 13px; color: #ccc; line-height: 1.5; margin: 4px 0 8px 0; }
+    .recipe-box { background: #2c2c2c; padding: 8px; border-radius: 6px; font-size: 12px; color: #e0e0e0; margin-top: 6px; }
+  </style>
 </head>
-
 <body>
 
-    <header>
-        <h1>🌊 澎湖智慧飲食</h1>
-        <p>探索澎湖食材、海鮮、營養與特色飲食</p>
-    </header>
+<div class="container">
+  <h1>🏝️ 澎湖每日生鮮食材指南</h1>
 
-    <nav>
-        <a href="#">首頁</a>
-        <a href="#">澎湖食材</a>
-        <a href="#">澎湖水產</a>
-        <a href="#">四季食材</a>
-        <a href="#">營養分析</a>
-        <a href="#">食譜</a>
-        <a href="#">AI 飲食推薦</a>
-    </nav>
+  <div class="filter-box">
+    <div class="filter-title">👤 個人健康/過敏設定（勾選後系統將警示）：</div>
+    <div class="filter-options">
+      <label><input type="checkbox" id="gout" onchange="render()"> 痛風/高普林</label>
+      <label><input type="checkbox" id="seafood" onchange="render()"> 海鮮過敏</label>
+    </div>
+  </div>
 
-    <main>
+  <div id="ingredient-list"></div>
+</div>
 
-        <section class="welcome">
-            <h2>認識澎湖的食材</h2>
+<script>
+const foodData = [
+  {
+    id: "toutou",
+    name: "透抽 (鎖管)",
+    category: "海鮮",
+    isTodayPick: true,
+    seasonMonths: "4-9月",
+    priceText: "批發價 $106/斤 (便宜 16%)",
+    origins: "澎湖馬公近海 / 第三漁港",
+    healthInfo: "高蛋白低脂，含牛磺酸與鋅[cite: 4, 5]。",
+    warnings: { gout: "痛風急性期請限量攝取", seafood: "軟體動物過敏者禁用" },
+    pickGuide: "體表透明帶紫紅色斑點，眼珠清澈飽滿[cite: 4, 5]。",
+    recipe: "🍳 推薦料理：【澎湖冰鎮酸辣透抽】—— 透抽汆燙 30 秒撈起冰鎮，淋上檸檬汁與蒜末即可。"
+  },
+  {
+    id: "water_spinach",
+    name: "空心菜",
+    category: "蔬菜",
+    isTodayPick: false,
+    seasonMonths: "4-9月",
+    priceText: "零售價 $35-50/斤 (近期降價 21%)",
+    origins: "澎湖在地網室蔬菜 / 台灣進口",
+    healthInfo: "富含鐵質、鈣與維生素 B 群[cite: 1, 2, 3]。",
+    warnings: { gout: "無特殊禁忌", seafood: "無" },
+    pickGuide: "莖部翠綠有光澤，折起來會脆斷[cite: 1, 2, 3]。",
+    recipe: "🍳 推薦料理：【澎湖小管乾炒空心菜】—— 爆香蒜頭與小管乾，下空心菜大火快炒。"
+  },
+  {
+    id: "pork_belly",
+    name: "五花肉",
+    category: "肉品",
+    isTodayPick: false,
+    seasonMonths: "全年盛產",
+    priceText: "批發均價 $59/斤 (價格平穩定)",
+    origins: "澎湖在地溫體豬",
+    healthInfo: "富含蛋白質與維生素 B12，補充體力[cite: 6, 7]。",
+    warnings: { gout: "高血脂與痛風患者建議適量食用，切勿過量", seafood: "無" },
+    pickGuide: "肉色粉紅偏紅，油脂層白色有光澤，按壓有彈性[cite: 6, 7]。",
+    recipe: "🍳 推薦料理：【澎湖石鮔乾滷五花肉】—— 在地名菜，石鮔乾鮮味完美融入豬肉。"
+  }
+];
 
-            <p>
-                本網站整理澎湖在地蔬菜、水果、水產、
-                肉類、乾貨及醃漬食品，
-                並提供季節、產地、營養與料理資訊。
-            </p>
+function render() {
+  const isGout = document.getElementById("gout").checked;
+  const isSeafood = document.getElementById("seafood").checked;
+  const listEl = document.getElementById("ingredient-list");
+  
+  listEl.innerHTML = "";
 
-            <button onclick="showMessage()">
-                開始探索
-            </button>
-        </section>
+  foodData.forEach(item => {
+    let warningMsg = "";
+    if (isGout && item.warnings.gout !== "無特殊禁忌") warningMsg += `⚠️ 痛風提醒：${item.warnings.gout} `;
+    if (isSeafood && item.warnings.seafood !== "無") warningMsg += `🚫 過敏警告：${item.warnings.seafood} `;
 
-        <section>
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="card-header">
+        <h2 class="card-title">${item.name}</h2>
+        <div>
+          ${item.isTodayPick ? '<span class="badge-today">🔥 當天最不可錯過</span>' : ''}
+          <span class="badge-season">${item.seasonMonths}</span>
+        </div>
+      </div>
+      
+      <div class="price-info">
+        💰 <span class="price-down">${item.priceText}</span><br>
+        📍 產地：${item.origins}
+      </div>
 
-            <h2>食材分類</h2>
+      ${warningMsg ? `<div class="warning-box" style="display:block;">${warningMsg}</div>` : ''}
 
-            <div class="categories">
+      <div class="section-title">💡 挑選撇步</div>
+      <div class="content-text">${item.pickGuide}</div>
 
-                <div class="card">
-                    <h3>🥬 蔬菜</h3>
-                    <p>菱角絲瓜、南瓜、青江菜、番茄等</p>
-                </div>
+      <div class="section-title">🥗 推薦菜單/作法</div>
+      <div class="recipe-box">${item.recipe}</div>
+    `;
+    listEl.appendChild(card);
+  });
+}
 
-                <div class="card">
-                    <h3>🍉 水果</h3>
-                    <p>嘉寶瓜、洋香瓜、紅龍果、芒果等</p>
-                </div>
-
-                <div class="card">
-                    <h3>🐟 水產</h3>
-                    <p>午仔魚、小卷、透抽、石斑等</p>
-                </div>
-
-                <div class="card">
-                    <h3>🦐 蝦蟹貝類</h3>
-                    <p>明蝦、火燒蝦、牡蠣、文蛤等</p>
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-    <footer>
-        <p>澎湖智慧飲食 © 2026</p>
-    </footer>
-
-    <script src="script.js"></script>
+render();
+</script>
 
 </body>
 </html>
