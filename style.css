@@ -1,139 +1,228 @@
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+:root{
+  --teal:#0f8b8d;
+  --teal-dark:#086b73;
+  --blue:#1d5fbf;
+  --orange:#f6a800;
+  --bg:#f4f7fb;
+  --card:#fff;
+  --text:#26364a;
+  --muted:#718096;
+  --line:#e5ebf2;
+  --green:#15966b;
+  --red:#ef476f;
+  --shadow:0 8px 24px rgba(30,60,90,.08);
 }
-
-body {
-    margin: 0;
-    font-family: Arial, "Microsoft JhengHei", sans-serif;
-    background-color: #f5f8fa;
-    color: #333;
+body{
+  margin:0;
+  font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
-
-/* 網站最上方 */
-
-header {
-    background-color: #1d6fa5;
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
+button,input,select{font:inherit}
+button{cursor:pointer}
+.topbar{
+  min-height:78px;
+  padding:14px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  color:white;
+  background:linear-gradient(100deg,#0e8b8d,#164bb0);
+  box-shadow:0 4px 18px rgba(0,0,0,.12);
 }
-
-header h1 {
-    margin: 0;
-    font-size: 40px;
+.brand{display:flex;align-items:center;gap:13px}
+.brand-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:grid;place-items:center;font-size:26px;
+  background:rgba(255,255,255,.18)
 }
-
-header p {
-    font-size: 18px;
+.brand h1{margin:0;font-size:22px}
+.brand p{margin:2px 0 0;font-size:12px;opacity:.9}
+.health-btn,.primary-btn{
+  border:0;border-radius:10px;background:#ffae16;color:#fff;
+  padding:12px 18px;font-weight:800;
 }
-
-/* 導覽列 */
-
-nav {
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    padding: 18px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.health-btn:hover,.primary-btn:hover{filter:brightness(.96);transform:translateY(-1px)}
+.nav{
+  display:flex;gap:8px;padding:0 5%;
+  background:#fff;border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:20;
 }
-
-nav a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
+.nav-btn{
+  border:0;background:transparent;padding:17px 18px;
+  color:#566579;border-bottom:3px solid transparent;
 }
-
-nav a:hover {
-    color: #1d6fa5;
+.nav-btn.active{color:var(--teal);font-weight:800;border-bottom-color:var(--teal)}
+main{max-width:1250px;margin:auto;padding:28px 20px 50px}
+.page-section{display:none}.page-section.active{display:block}
+.hero{
+  position:relative;overflow:hidden;
+  border-radius:18px;padding:30px;
+  color:#fff;
+  background:linear-gradient(120deg,#f23555,#f7a916);
+  box-shadow:var(--shadow);
 }
-
-/* 主要內容 */
-
-main {
-    max-width: 1100px;
-    margin: auto;
-    padding: 40px 20px;
+.hero h2{font-size:34px;margin:12px 0 8px}
+.hero p{max-width:700px;line-height:1.7;margin:0}
+.hero-meta,.hero-tags{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.hero-tags{margin-top:22px}
+.hero-tags span{
+  background:rgba(90,20,20,.22);padding:8px 12px;border-radius:999px;font-size:13px
 }
-
-.welcome {
-    background-color: white;
-    padding: 40px;
-    border-radius: 15px;
-    text-align: center;
-    margin-bottom: 40px;
+.pill{padding:7px 11px;border-radius:999px;font-weight:800;font-size:12px}
+.pill.danger{background:#fff0c7;color:#9a5c00}
+.hero-wave{
+  position:absolute;right:35px;bottom:0;font-size:110px;opacity:.15;transform:rotate(-12deg)
 }
-
-.welcome h2 {
-    font-size: 30px;
+.weather-card{
+  margin-top:18px;background:#fff;border:1px solid var(--line);
+  border-radius:16px;padding:22px;display:flex;justify-content:space-between;
+  gap:20px;align-items:center;box-shadow:var(--shadow)
 }
-
-/* 按鈕 */
-
-button {
-    background-color: #1d6fa5;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
+.eyebrow{color:var(--teal);font-size:13px;font-weight:800;margin:0 0 4px}
+.weather-card h3{margin:0 0 4px;font-size:22px}
+.weather-card p{margin:0;color:var(--muted);font-size:12px}
+.weather-metrics{display:flex;gap:16px;flex-wrap:wrap}
+.weather-metrics div{
+  min-width:85px;padding:10px 12px;border-radius:12px;background:#f5f8fb;text-align:center
 }
-
-button:hover {
-    background-color: #155579;
+.weather-metrics strong{display:block;font-size:21px;color:#1d4f83}
+.weather-metrics span{font-size:11px;color:var(--muted)}
+.section-head,.section-title{
+  display:flex;justify-content:space-between;gap:20px;align-items:center;margin:30px 2px 14px
 }
-
-/* 食材卡片 */
-
-.categories {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+.section-head h2,.section-title h2{margin:0 0 5px}
+.section-head p,.section-title p{margin:0;color:var(--muted);font-size:13px}
+.section-head.compact{margin-top:34px}
+.ghost-btn{
+  border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 14px;color:var(--teal)
 }
-
-.card {
-    background-color: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+.food-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px
 }
-
-.card:hover {
-    transform: translateY(-5px);
-    transition: 0.2s;
+.food-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  overflow:hidden;box-shadow:0 4px 14px rgba(30,60,90,.05);
+  transition:.2s;display:flex;flex-direction:column
 }
-
-/* 頁尾 */
-
-footer {
-    text-align: center;
-    background-color: #1d6fa5;
-    color: white;
-    padding: 20px;
-    margin-top: 50px;
+.food-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.food-card-body{padding:18px;flex:1}
+.food-top{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.category-tag{
+  display:inline-block;padding:5px 8px;border-radius:7px;
+  color:var(--teal-dark);background:#e7faf6;font-size:11px;font-weight:800
 }
-
-
-/* 手機版 */
-
-@media (max-width: 800px) {
-
-    .categories {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    nav {
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-
+.source-tag{
+  display:inline-block;padding:5px 8px;border-radius:999px;
+  background:#eef8ff;color:#2b70a7;font-size:11px
 }
-
-@media (max-width: 500px) {
-
-    .categories {
-        grid-template-columns: 1fr;
-    }
-
+.food-card h3{margin:12px 0 6px;font-size:19px}
+.food-card p{margin:0;color:#6d7c8f;font-size:13px;line-height:1.65}
+.reason{
+  margin-top:13px;padding:10px;border-radius:10px;
+  background:#effaf7;color:#16785e;font-size:12px;line-height:1.6
+}
+.food-footer{
+  padding:11px 16px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px
+}
+.food-footer span{color:var(--green)}
+.text-btn{border:0;background:transparent;color:var(--teal);font-weight:800}
+.buy-list{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.buy-item{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;
+  display:flex;align-items:center;gap:10px
+}
+.buy-icon{font-size:28px}
+.buy-item strong{display:block}.buy-item small{color:var(--muted)}
+.info-box{
+  margin-top:20px;padding:14px 16px;background:#eef9ff;border:1px solid #cde8f7;
+  border-radius:12px;color:#476174;font-size:13px;line-height:1.6
+}
+.info-box strong{display:block;color:#2b6689;margin-bottom:4px}
+.season-tabs{display:flex;gap:10px;margin:20px 0 15px}
+.season-btn{
+  flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px;
+  color:#566579;font-weight:800
+}
+.season-btn.active{background:#ffad12;color:#fff;border-color:#ffad12}
+.season-banner{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:16px;
+  line-height:1.7
+}
+.filters{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-bottom:16px
+}
+.filters input,.filters select{
+  width:100%;padding:11px;border:1px solid #dce4ec;border-radius:9px;
+  outline:none;background:#fff
+}
+.filters input:focus,.filters select:focus{border-color:var(--teal)}
+.health-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.health-panel{
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px
+}
+.health-panel h3{margin:0 0 14px}
+.check-row{
+  display:flex;align-items:center;gap:10px;padding:11px 0;
+  border-bottom:1px solid #f0f3f6;font-size:14px
+}
+.check-row:last-child{border-bottom:0}
+.check-row input{width:17px;height:17px;accent-color:var(--teal)}
+.full{width:100%}
+.modal{
+  position:fixed;inset:0;background:rgba(31,42,55,.62);
+  display:grid;place-items:center;padding:20px;z-index:100
+}
+.modal.hidden{display:none}
+.modal-card{
+  position:relative;background:#fff;border-radius:18px;
+  width:min(720px,100%);max-height:90vh;overflow:auto;padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25)
+}
+.modal-card.small{width:min(760px,100%)}
+.modal-close{
+  position:absolute;right:16px;top:13px;border:0;background:transparent;
+  font-size:28px;color:#9aa8b7
+}
+.modal-heading{display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:15px}
+.modal-heading>span{font-size:30px}
+.modal-heading h2{margin:0}.modal-heading p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.detail-header{padding-right:25px}
+.detail-header .category-tag{margin-bottom:8px}
+.detail-header h2{margin:0 0 7px;font-size:28px}
+.detail-sub{color:var(--muted);font-size:13px}
+.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.detail-stat{
+  background:#f5f8fb;border-radius:12px;padding:12px;text-align:center
+}
+.detail-stat span{display:block;color:var(--muted);font-size:11px}.detail-stat strong{font-size:18px}
+.detail-section{border-top:1px solid var(--line);padding:15px 0}
+.detail-section h4{margin:0 0 8px;color:var(--teal-dark)}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{background:#f0f4f8;padding:6px 9px;border-radius:999px;font-size:12px}
+.warning{background:#fff7e6;color:#8b5d00;padding:10px;border-radius:10px;font-size:12px;line-height:1.6}
+.blocked{opacity:.55}
+@media(max-width:950px){
+  .food-grid{grid-template-columns:repeat(2,1fr)}
+  .buy-list{grid-template-columns:repeat(2,1fr)}
+  .filters{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  .topbar{align-items:flex-start;flex-direction:column}
+  .nav{overflow:auto}
+  .nav-btn{white-space:nowrap;padding:14px 11px}
+  main{padding:18px 12px 40px}
+  .hero h2{font-size:27px}
+  .weather-card{align-items:flex-start;flex-direction:column}
+  .food-grid,.health-layout{grid-template-columns:1fr}
+  .buy-list{grid-template-columns:1fr}
+  .filters{grid-template-columns:1fr}
+  .section-head,.section-title{align-items:flex-start;flex-direction:column}
+  .season-tabs{display:grid;grid-template-columns:1fr 1fr}
+  .hero-wave{display:none}
 }
